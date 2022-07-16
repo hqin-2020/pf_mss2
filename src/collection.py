@@ -48,6 +48,9 @@ for i in range(1,batch_num):
     except:
         pass
 
+with open(outputdir + 'success_seed.pkl', 'wb') as f:
+        pickle.dump(success_seed, f)
+
 def return_coll(θ_final):
     λ_particle = []; η_particle = []; b11_particle = []; b22_particle = []
     As11_particle = []; As12_particle = []; As13_particle = []; 
