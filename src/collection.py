@@ -15,8 +15,8 @@ datadir = workdir + '/data/'
 outputdir = workdir + '/output/'
 docdir = workdir + '/doc/'
 
-obs_series = pd.read_csv(datadir + 'data.csv', delimiter=',')
-obs_series = np.array(obs_series.iloc[:,1:]).T
+obs_series = pd.read_csv(datadir + 'data.csv', delimiter=',', header = None)
+obs_series = np.array(obs_series)
 
 T = obs_series.shape[1]
 N = 10_000
