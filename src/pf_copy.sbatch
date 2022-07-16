@@ -4,10 +4,10 @@
 #SBATCH --output=pf_copy.out
 #SBATCH --error=pf_copy.err
 #SBATCH --time=0-0:5:00
-#SBATCH --partition=broadwl
+#SBATCH --partition=bigmem2
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=2
-#SBATCH --mem=32G
+#SBATCH --mem=64G
 
 module load python/anaconda-2021.05
 
