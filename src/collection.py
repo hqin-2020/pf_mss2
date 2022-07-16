@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 sns.set()
 
-batch_num = 120
+batch_num = 150
 
 workdir = os.path.dirname(os.getcwd())
 srcdir = os.getcwd()

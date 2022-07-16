@@ -2,7 +2,7 @@ import shutil
 import os
 from tqdm import tqdm
 
-batch_num = 120
+batch_num = 150
 
 workdir = os.path.dirname(os.getcwd())
 source_dir = '/project2/lhansen/particle_filtering/pf_mss2/'
