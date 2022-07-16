@@ -16,7 +16,7 @@ if __name__ == '__main__':
     workdir = os.path.dirname(os.getcwd())
     srcdir = os.getcwd()
     datadir = workdir + '/data/'
-    outputdir = '/project2/lhansen/pf_mss2/'
+    outputdir = '/project2/lhansen/particle_filtering/pf_mss2/'
 
     seed = 0
 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     T = obs_series.shape[1]
     N = 10_000
 
-    case = 'actual data, seed = ' + str(seed) + ', T = ' + str(T) + ', N = ' + str(N)
+    case = 'simulated data, seed = ' + str(seed) + ', T = ' + str(T) + ', N = ' + str(N)
     try: 
         casedir = outputdir + case  + '/'
         os.mkdir(casedir)
@@ -77,7 +77,7 @@ if __name__ == '__main__':
         H_t_next_particle = [i[2] for i in Output]
         ν_t_next_particle = [i[3] for i in Output]    
         del(Output)
-        if t in [49,99,149,199,249,281]:
+        if t in [99,199,281]:
             with open(casedir + 'θ_' + str(t+1) + '.pkl', 'wb') as f:
                 pickle.dump(θ_t_next_particle, f)
         del(θ_t_next_particle)
@@ -98,11 +98,11 @@ if __name__ == '__main__':
                     break
             count_all = sp.stats.multinomial.rvs(N, w_t_next)
         
-        with open(casedir + 'w_' + str(t+1) + '.pkl', 'wb') as f:
-            pickle.dump(w_t_next, f)
-        del(w_t_next)
-        with open(casedir + 'count_' + str(t+1) + '.pkl', 'wb') as f:
-            pickle.dump(count_all, f)
+        # with open(casedir + 'w_' + str(t+1) + '.pkl', 'wb') as f:
+        #     pickle.dump(w_t_next, f)
+        # del(w_t_next)
+        # with open(casedir + 'count_' + str(t+1) + '.pkl', 'wb') as f:
+        #     pickle.dump(count_all, f)
         
         X_t_particle = []
         H_t_particle = []

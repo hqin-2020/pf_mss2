@@ -103,7 +103,7 @@ def update_θ(H):
     
     return θ
 
-def init_X(θ, D_0):
+def init_X(θ, D0):
     
     λ, η, b11, b22, As11, As12, As13, As21, As22, As23, Aso2, As31, As32, As33, Aso3, Bs11, Bs21, Bs22, Bs31, Bs32, Bs33, j21, j31, j32 = decompose_θ(θ)
     ones = np.ones([3,1])
@@ -126,11 +126,11 @@ def init_X(θ, D_0):
     γ3 = np.array([[0],[0],[1]]) - sp.linalg.inv(Σs)@ones/(ones.T@sp.linalg.inv(Σs)@ones)
     Γ = np.hstack([γ1, γ2, γ3])
     
-    Z01 = β.T@(D_0 - μs)
+    Z01 = β.T@(D0 - μs)
     Σz01 = 0.0
     Z02 = η/(1-λ)
     Σz02 = b22**2/(1-λ**2)
-    S0 = Γ.T@(D_0 - μs) + μs
+    S0 = Γ.T@(D0 - μs) + μs
     Σs0 = (1/(ones.T@sp.linalg.inv(Σs)@ones))[0][0]
     
     μ0 = np.array([[Z01[0][0]],\

@@ -3,7 +3,7 @@
 #SBATCH --job-name=pf_copy
 #SBATCH --output=pf_copy.out
 #SBATCH --error=pf_copy.err
-#SBATCH --time=0-0:15:00
+#SBATCH --time=0-0:5:00
 #SBATCH --partition=broadwl
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=2

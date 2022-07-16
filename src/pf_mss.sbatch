@@ -13,4 +13,5 @@
 
 module load python/anaconda-2021.05
 
-srun python3 Run_Aso1_0_CPU_$SLURM_ARRAY_TASK_ID.py  
+python3 multi_seeds.py 
+python3 Run_Aso1_0_CPU_$SLURM_ARRAY_TASK_ID.py  

@@ -1,26 +1,25 @@
 import numpy as np
-import scipy as sp
-import pandas as pd
-import matplotlib.pyplot as plt
-import multiprocessing
-import seaborn as sns
-import time
-from tqdm import tqdm
-import pickle
 import os
+import pickle
+from tqdm import tqdm
+import pandas as pd 
+import seaborn as sns
+import matplotlib.pyplot as plt
 sns.set()
+
+batch_num = 120
+
 workdir = os.path.dirname(os.getcwd())
 srcdir = os.getcwd()
 datadir = workdir + '/data/'
 outputdir = workdir + '/output/'
 docdir = workdir + '/doc/'
 
-# obs_series = pd.read_csv(datadir + 'data.csv', delimiter=',')
-# obs_series = np.array(obs_series.iloc[:,1:]).T
+obs_series = pd.read_csv(datadir + 'data.csv', delimiter=',')
+obs_series = np.array(obs_series.iloc[:,1:]).T
 
-T = 283
-N = 100_000
-batch_num = 151
+T = obs_series.shape[1]
+N = 10_000
 
 θ_name = ['λ', 'η', \
         'b11', 'b22', \
@@ -31,7 +30,7 @@ batch_num = 151
         'j21',  'j31',  'j32']
 
 def return_dir(seed):
-    case = 'actual data, seed = ' + str(seed) + ', T = ' + str(T) + ', N = ' + str(N)
+    case = 'simulated data, seed = ' + str(seed) + ', T = ' + str(T) + ', N = ' + str(N)
     return outputdir + case  + '/'
 
 casedir = []
@@ -41,7 +40,7 @@ for i in range(batch_num):
 t = 282
 θ_final = []
 success_seed = []
-for i in tqdm(range(1,batch_num)):
+for i in range(1,batch_num):
     try:
         with open(casedir[i] + 'θ_'+str(t)+'.pkl', 'rb') as f:
             θ_final.append(pickle.load(f))
@@ -101,16 +100,33 @@ for i in tqdm(range(len(θ_final))):
     indexes.append('seed = '+str(success_seed[i]))
 
 θ_all = []
-for i in range(len(θ_name)):
+for i in tqdm(range(len(θ_name))):
+    print(i)
     θ_t = []
-    for θs in tqdm(θ_coll):
+    for θs in θ_coll:
         θ_t = θ_t + θs[i]
     θ_all.append(θ_t)
+
+λ, η = 0.5, 0
+b11, b22 = 1, 0.5
+
+As11, As12, As13,      = 0.9, 0.0, 0.0
+As21, As22, As23, Aso2 = 0.0, 0.8, 0.0, 0
+As31, As32, As33, Aso3 = 0.0, 0.0, 0.7, 0
+
+Bs11, Bs21, Bs22, Bs31, Bs32, Bs33 = 4, 0, 3, 0, 0, 2
+
+θ_true = [λ, η, b11, b22, As11, As12, As13, As21, As22, As23, Aso2, As31, As32, As33, Aso3, Bs11, Bs21, Bs22, Bs31, Bs32, Bs33, np.nan, np.nan, np.nan]
 
 period = t
 fig, axes = plt.subplots(6,4,figsize = (15,10))
 for v, ax in tqdm(enumerate(axes.flatten())):
     sns.kdeplot(data = θ_all[v][0:10_000_000], ax = ax)
+    ax2 = ax.twinx()
+    ymin, ymax = ax2.get_ylim()
+    ax2.set_ylim(ymin, ymax)
+    ax2.vlines(θ_true[v],ymin,ymax,color='red',linestyle = '--')
+    ax2.set_yticks([])
     ax.set_title(θ_name[v])
 title = '100 Different Random seeds, Aggregate Distribution of parameters, T = '+ str(period)+', N = '+str(N)
 fig.suptitle(title, fontsize=16)    
@@ -118,5 +134,7 @@ fig.tight_layout()
 fig.savefig(docdir + title + '.png',dpi = 400, bbox_inches = "tight")
 
 for i in tqdm(range(len(θ_all))): 
-    with open(outputdir + 'θ_all_' + str(i) + '.pkl', 'wb') as f:
+    print(i)
+    with open(outputdir + 'θ_'+ str(t) + '_' + str(i) + '.pkl', 'wb') as f:
             pickle.dump(θ_all[i], f)
+
